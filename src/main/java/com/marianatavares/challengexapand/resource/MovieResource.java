@@ -29,21 +29,21 @@ public class MovieResource {
 	private MovieService service;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Movie>> findAll() {
-		List<Movie> list = service.findAll();
+	public ResponseEntity<List<Movie>> getAll() {
+		List<Movie> list = service.getAll();
 
 		return ResponseEntity.ok().body(list);
 
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Movie> findById(@PathVariable String id) {
-		Movie movie = service.findById(id);
+	public ResponseEntity<Movie> getById(@PathVariable String id) {
+		Movie movie = service.getById(id);
 		return ResponseEntity.ok().body(movie);
 	}
 
 	@RequestMapping(value = "/datesearch", method = RequestMethod.GET)
-	public ResponseEntity<Movie> findByLaunchDate(
+	public ResponseEntity<Movie> getByLaunchDate(
 			// @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate
 			@RequestParam String textDate) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -51,7 +51,7 @@ public class MovieResource {
 		Movie movie;
 		try {
 			date = sdf.parse(textDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			movie = service.findByLaunchDate(date);
+			movie = service.getByLaunchDate(date);
 			return ResponseEntity.ok().body(movie);
 
 		} catch (ParseException e) {
@@ -71,7 +71,7 @@ public class MovieResource {
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		try {
 			service.delete(id);
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.accepted().build();
 		} catch (RuntimeException ex) {
 			System.out.println(ex);
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,7 +82,7 @@ public class MovieResource {
 	public ResponseEntity<Void> updateMovie(@RequestBody Movie movie, @PathVariable String id) {
 
 		try {
-			Movie newMovie = service.findById(id);
+			Movie newMovie = service.getById(id);
 
 			if (newMovie == null) {
 				return ResponseEntity.notFound().build();

@@ -16,28 +16,28 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="movie")
-public class Movie implements Serializable{
+@Table(name = "movie")
+public class Movie implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")	
-	@Column(name="id")
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@Column(name = "id")
 	private String id;
-	@Column(name="title")
+	@Column(name = "title")
 	private String title;
 
-	@Column(name="launchdate")
+	@Column(name = "launchdate")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate launchDate;
-	@Column(name="rate")
+	@Column(name = "rate")
 	private Integer rate;
-	@Column(name="revenue")
-	private Double revenue; 
+	@Column(name = "revenue")
+	private Double revenue;
 
 	public Movie() {
-		
+
 	}
 
 	public Movie(String title, LocalDate launchDate, Integer rate, Double revenue) {
@@ -50,9 +50,9 @@ public class Movie implements Serializable{
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public void setId(String id) {
-		this.id=id;
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -109,10 +109,5 @@ public class Movie implements Serializable{
 		return "Movie [id=" + id + ", title=" + title + ", launchDate=" + launchDate + ", rank=" + rate + ", revenue="
 				+ revenue + "]";
 	}
-	
-	
-	
-	
-	
-	
+
 }

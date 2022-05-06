@@ -8,12 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.marianatavares.challengexapand.domain.Movie;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, String>{
+public interface MovieRepository extends JpaRepository<Movie, String> {
 
 	public Movie findByLaunchDate(LocalDate launchDate);
-	
 
-	
-	
-	
 }
