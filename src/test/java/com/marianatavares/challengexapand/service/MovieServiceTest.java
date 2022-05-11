@@ -63,7 +63,7 @@ public class MovieServiceTest {
 	@Test
 	public void whenGivenLaunchDateShouldReturnMovieWithThatLaunchDate() {
 		when(repo.findByLaunchDate(LocalDate.of(2021, 11, 1))).thenReturn((movie1));
-		assertThat(service.getByLaunchDate(LocalDate.of(2021, 11, 1))).isEqualTo(movie1);
+		assertThat(service.getByLaunchDate("2021-11-1")).isEqualTo(movie1);
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class MovieServiceTest {
 	@Test
 	public void whenGivenMovieShouldUpdateMovieFound() {
 		movie1.setTitle("Joker3");
-	    service.updateMovie(movie1);
+	    service.updateMovie(movie1, movie1.getId());
 	    verify(repo).save(movie1);
 	}
 	
