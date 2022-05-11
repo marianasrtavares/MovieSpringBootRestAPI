@@ -37,7 +37,7 @@ public class MovieResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Movie> getById(@PathVariable String id) {
+	public ResponseEntity<Movie> getById(@PathVariable Long id) {
 		Movie movie = service.getById(id);
 		return ResponseEntity.ok().body(movie);
 	}
@@ -68,7 +68,7 @@ public class MovieResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteById(@PathVariable String id) {
+	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		try {
 			service.delete(id);
 			return ResponseEntity.accepted().build();
@@ -79,7 +79,7 @@ public class MovieResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateMovie(@RequestBody Movie movie, @PathVariable String id) {
+	public ResponseEntity<Void> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
 
 		try {
 			Movie newMovie = service.getById(id);

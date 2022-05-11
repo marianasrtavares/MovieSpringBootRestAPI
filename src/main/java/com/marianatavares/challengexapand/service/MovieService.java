@@ -24,7 +24,7 @@ public class MovieService {
 		return repo.findByLaunchDate(launchDate);
 	}
 
-	public Movie getById(String id) {
+	public Movie getById(Long id) {
 		return repo.findById(id).get();
 	}
 
@@ -36,7 +36,7 @@ public class MovieService {
 		repo.save(movie);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		repo.deleteById(id);
 
 	}
