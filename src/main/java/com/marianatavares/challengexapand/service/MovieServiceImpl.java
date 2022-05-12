@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.marianatavares.challengexapand.domain.Movie;
 import com.marianatavares.challengexapand.repository.MovieRepository;
+import com.marianatavares.challengexapand.utils.Validator;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -42,28 +43,30 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	public void insertMovie(Movie movie) {
+		Validator.validate(movie);
 		repo.save(movie);
 	}
 
 	public void updateMovie(Movie movie, Long id) {
 
 		Movie newMovie = repo.findById(id).get();
-
-		if (movie.getTitle() != null && newMovie.getTitle() != movie.getTitle()) {
+//movie.getTitle() != null &&
+		if (newMovie.getTitle() != movie.getTitle()) {
 			newMovie.setTitle(movie.getTitle());
 		}
-		if (movie.getLaunchDate() != null && newMovie.getLaunchDate() != movie.getLaunchDate()) {
+		if (newMovie.getLaunchDate() != movie.getLaunchDate()) {
 			newMovie.setLaunchDate(movie.getLaunchDate());
 		}
-		if (movie.getRate() != null && newMovie.getRate() != movie.getRate()) {
+		if (newMovie.getRate() != movie.getRate()) {
 			newMovie.setRate(movie.getRate());
 		}
 
-		if (movie.getRevenue() != null && newMovie.getRevenue() != movie.getRevenue()) {
+		if (newMovie.getRevenue() != movie.getRevenue()) {
 			newMovie.setRevenue(movie.getRevenue());
 		}
 
 		newMovie.setId(id);
+		Validator.validate(newMovie);
 		repo.save(newMovie);
 	}
 
