@@ -3,7 +3,6 @@ package com.marianatavares.challengexapand.resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,17 +19,16 @@ import com.marianatavares.challengexapand.service.MovieService;
 @RequestMapping(value = "/movies")
 public class MovieResourceImpl implements MovieResource {
 
-	
 	private final MovieService service;
-	
+
 	public MovieResourceImpl(MovieService service) {
-		this.service=service;
+		this.service = service;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<MovieDTO>> getAll() {
 		List<Movie> list = service.getAll();
-		List<MovieDTO>listDto =  list.stream().map(x->new MovieDTO(x)).collect(Collectors.toList());
+		List<MovieDTO> listDto = list.stream().map(x -> new MovieDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 
 	}
@@ -38,36 +36,35 @@ public class MovieResourceImpl implements MovieResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<MovieDTO> getById(@PathVariable Long id) {
 		Movie movie = service.getById(id);
-		MovieDTO movieDto= new MovieDTO(movie);
+		MovieDTO movieDto = new MovieDTO(movie);
 		return ResponseEntity.ok().body(movieDto);
 	}
 
 	@RequestMapping(value = "/datesearch", method = RequestMethod.GET)
 	public ResponseEntity<MovieDTO> getByLaunchDate(@RequestParam String textDate) {
 		Movie movie = service.getByLaunchDate(textDate);
-		MovieDTO movieDto= new MovieDTO(movie);
+		MovieDTO movieDto = new MovieDTO(movie);
 		return ResponseEntity.ok().body(movieDto);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody MovieDTO movieDto) {
-		Movie movie= service.fromDto(movieDto);
+		Movie movie = service.fromDto(movieDto);
 		service.insertMovie(movie);
 		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-			service.delete(id);
-			return ResponseEntity.noContent().build();
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateMovie(@RequestBody MovieDTO movieDto, @PathVariable Long id) {
-		    Movie movie= service.fromDto(movieDto);
-		    service.updateMovie(movie,id);
-			return ResponseEntity.noContent().build();
+		Movie movie = service.fromDto(movieDto);
+		service.updateMovie(movie, id);
+		return ResponseEntity.noContent().build();
 	}
-
 
 }

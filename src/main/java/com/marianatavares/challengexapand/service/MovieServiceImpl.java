@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marianatavares.challengexapand.domain.Movie;
@@ -18,9 +17,9 @@ import com.marianatavares.challengexapand.utils.Validator;
 public class MovieServiceImpl implements MovieService {
 
 	private final MovieRepository repo;
-	
-	public MovieServiceImpl (MovieRepository repo) {
-		this.repo=repo;
+
+	public MovieServiceImpl(MovieRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<Movie> getAll() {
@@ -54,21 +53,20 @@ public class MovieServiceImpl implements MovieService {
 	public void updateMovie(Movie movie, Long id) {
 
 		Movie newMovie = repo.findById(id).get();
-		if (movie.getTitle()!=null && newMovie.getTitle() != movie.getTitle()) {
+		if (movie.getTitle() != null && newMovie.getTitle() != movie.getTitle()) {
 			newMovie.setTitle(movie.getTitle());
 		}
-		if (movie.getLaunchDate()!=null &&newMovie.getLaunchDate() != movie.getLaunchDate()) {
+		if (movie.getLaunchDate() != null && newMovie.getLaunchDate() != movie.getLaunchDate()) {
 			newMovie.setLaunchDate(movie.getLaunchDate());
 		}
-		if (movie.getRate()!=null &&newMovie.getRate() != movie.getRate()) {
+		if (movie.getRate() != null && newMovie.getRate() != movie.getRate()) {
 			newMovie.setRate(movie.getRate());
 		}
 
-		if (movie.getRevenue()!=null && newMovie.getRevenue() != movie.getRevenue()) {
+		if (movie.getRevenue() != null && newMovie.getRevenue() != movie.getRevenue()) {
 			newMovie.setRevenue(movie.getRevenue());
 		}
 
-	
 		Validator.validate(newMovie);
 		repo.save(newMovie);
 	}
@@ -77,12 +75,12 @@ public class MovieServiceImpl implements MovieService {
 		repo.deleteById(id);
 
 	}
-	
+
 	public Movie fromDto(MovieDTO movieDto) {
-		Movie movie= new Movie(movieDto.getTitle(),movieDto.getLaunchDate(),movieDto.getRate(),movieDto.getRevenue());
-	    movie.setId(movieDto.getId());
+		Movie movie = new Movie(movieDto.getTitle(), movieDto.getLaunchDate(), movieDto.getRate(),
+				movieDto.getRevenue());
+		movie.setId(movieDto.getId());
 		return movie;
 	}
-
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.marianatavares.challengexapand.domain.Movie;
 import com.marianatavares.challengexapand.dto.MovieDTO;
 
 public interface MovieResource {

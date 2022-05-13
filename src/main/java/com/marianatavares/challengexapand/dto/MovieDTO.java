@@ -5,27 +5,27 @@ import java.time.LocalDate;
 
 import com.marianatavares.challengexapand.domain.Movie;
 
-public class MovieDTO implements Serializable{
+public class MovieDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String title;
 	private LocalDate launchDate;
 	private Integer rate;
 	private Double revenue;
-	
+
 	public MovieDTO() {
-		
+
 	}
-	
-    public MovieDTO(Movie movie) {
-    	id=movie.getId();
-    	title=movie.getTitle();
-    	launchDate=movie.getLaunchDate();
-    	rate= movie.getRate();
-    	revenue=movie.getRevenue();
-		
+
+	public MovieDTO(Movie movie) {
+		id = movie.getId();
+		title = movie.getTitle();
+		launchDate = movie.getLaunchDate();
+		rate = movie.getRate();
+		revenue = movie.getRevenue();
+
 	}
 
 	public Long getId() {
@@ -67,7 +67,5 @@ public class MovieDTO implements Serializable{
 	public void setRevenue(Double revenue) {
 		this.revenue = revenue;
 	}
-    
-    
-	
+
 }

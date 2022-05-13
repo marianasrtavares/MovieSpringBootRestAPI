@@ -17,7 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,12 +28,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marianatavares.challengexapand.domain.Movie;
-import com.marianatavares.challengexapand.repository.MovieRepository;
 import com.marianatavares.challengexapand.service.MovieService;
 import com.marianatavares.challengexapand.service.MovieServiceImpl;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MovieResource.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MovieResourceTest {
 
 	@Autowired
@@ -42,8 +43,6 @@ public class MovieResourceTest {
 	private ObjectMapper objectMapper;
 
 	private MovieService service;
-	private MovieResource resource;
-
 
 	@InjectMocks
 	private Movie movie1;
@@ -52,8 +51,7 @@ public class MovieResourceTest {
 
 	@BeforeEach
 	public void setUp() {
-		this.service= mock(MovieServiceImpl.class);
-		this.resource=new MovieResourceImpl(service);
+		this.service = mock(MovieServiceImpl.class);
 		movieList = new ArrayList<>();
 		movie1 = new Movie("Joker2", LocalDate.of(2021, 11, 1), 8, 293023.2);
 		movie2 = new Movie("Windfall2", LocalDate.of(2021, 03, 11), 4, 8938293.2);
@@ -68,46 +66,44 @@ public class MovieResourceTest {
 	}
 
 	@Test
-	public void getAllMovies() throws Exception{
+	public void getAllMovies() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/movies").accept(MediaType.APPLICATION_JSON)).andDo(print())
-		.andExpect(status().isOk());
-}
+				.andExpect(status().isOk());
+	}
+
 	@Test
-	public void getMoviesById() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.get("/movies/{id}",1).accept(MediaType.APPLICATION_JSON)).andDo(print())
-		.andExpect(status().isOk());
-}
+	public void getMoviesById() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/movies/{id}", 1).accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isOk());
+	}
+
 	@Test
-	public void getMoviesByLaunchDate() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.get("/movies/{launchDate}",1).accept(MediaType.APPLICATION_JSON)).andDo(print())
-		.andExpect(status().isOk());
-		}
+	public void getMoviesByLaunchDate() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/movies/{launchDate}", 1).accept(MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(status().isOk());
+	}
+
 	@Test
 	public void createMovieWhenPostMethod() throws Exception {
-		ResultActions resultActions = mockMvc.perform(post("/movies")
-		.contentType(MediaType.APPLICATION_JSON)
-		.content(objectMapper.writeValueAsString(movie1)));
-		
+		ResultActions resultActions = mockMvc.perform(post("/movies").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(movie1)));
+
 		resultActions.andExpect(status().isNoContent());
 	}
-	
+
 	@Test
 	public void updateMovieWhenPutMethod() throws Exception {
 		when(service.getById(movie1.getId())).thenReturn(movie1);
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/movies/{id}",movie1.getId())
-		.contentType(MediaType.APPLICATION_JSON)
-		.content(objectMapper.writeValueAsString(movie2));
-	
-		
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/movies/{id}", movie1.getId())
+				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(movie2));
+
 		this.mockMvc.perform(builder).andExpect(status().isNoContent());
 	}
-	
-	
+
 	@Test
-	public void deleteMoviesById() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.delete("/movies/{id}",1)).andExpect(status().isAccepted());
-		
-		}
-	
-	
+	public void deleteMoviesById() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.delete("/movies/{id}", 1)).andExpect(status().isNoContent());
+
+	}
+
 }
