@@ -1,6 +1,7 @@
 package com.marianatavares.challengexapand.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,36 +13,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marianatavares.challengexapand.domain.Movie;
+import com.marianatavares.challengexapand.dto.MovieDTO;
 import com.marianatavares.challengexapand.service.MovieService;
 
 @RestController
 @RequestMapping(value = "/movies")
 public class MovieResourceImpl implements MovieResource {
 
-	@Autowired
-	private MovieService service;
+	
+	private final MovieService service;
+	
+	public MovieResourceImpl(MovieService service) {
+		this.service=service;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Movie>> getAll() {
+	public ResponseEntity<List<MovieDTO>> getAll() {
 		List<Movie> list = service.getAll();
-		return ResponseEntity.ok().body(list);
+		List<MovieDTO>listDto =  list.stream().map(x->new MovieDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Movie> getById(@PathVariable Long id) {
+	public ResponseEntity<MovieDTO> getById(@PathVariable Long id) {
 		Movie movie = service.getById(id);
-		return ResponseEntity.ok().body(movie);
+		MovieDTO movieDto= new MovieDTO(movie);
+		return ResponseEntity.ok().body(movieDto);
 	}
 
 	@RequestMapping(value = "/datesearch", method = RequestMethod.GET)
-	public ResponseEntity<Movie> getByLaunchDate(@RequestParam String textDate) {
+	public ResponseEntity<MovieDTO> getByLaunchDate(@RequestParam String textDate) {
 		Movie movie = service.getByLaunchDate(textDate);
-		return ResponseEntity.ok().body(movie);
+		MovieDTO movieDto= new MovieDTO(movie);
+		return ResponseEntity.ok().body(movieDto);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Movie movie) {
+	public ResponseEntity<Void> insert(@RequestBody MovieDTO movieDto) {
+		Movie movie= service.fromDto(movieDto);
 		service.insertMovie(movie);
 		return ResponseEntity.noContent().build();
 	}
@@ -53,9 +63,11 @@ public class MovieResourceImpl implements MovieResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
-			service.updateMovie(movie,id);
+	public ResponseEntity<Void> updateMovie(@RequestBody MovieDTO movieDto, @PathVariable Long id) {
+		    Movie movie= service.fromDto(movieDto);
+		    service.updateMovie(movie,id);
 			return ResponseEntity.noContent().build();
 	}
+
 
 }

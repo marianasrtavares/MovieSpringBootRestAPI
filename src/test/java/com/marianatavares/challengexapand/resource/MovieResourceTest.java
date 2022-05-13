@@ -1,7 +1,7 @@
 package com.marianatavares.challengexapand.resource;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,7 +27,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marianatavares.challengexapand.domain.Movie;
+import com.marianatavares.challengexapand.repository.MovieRepository;
 import com.marianatavares.challengexapand.service.MovieService;
+import com.marianatavares.challengexapand.service.MovieServiceImpl;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MovieResource.class)
@@ -41,17 +41,19 @@ public class MovieResourceTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@MockBean
 	private MovieService service;
+	private MovieResource resource;
+
 
 	@InjectMocks
-	private MovieResource resource;
 	private Movie movie1;
 	private Movie movie2;
 	List<Movie> movieList;
 
 	@BeforeEach
 	public void setUp() {
+		this.service= mock(MovieServiceImpl.class);
+		this.resource=new MovieResourceImpl(service);
 		movieList = new ArrayList<>();
 		movie1 = new Movie("Joker2", LocalDate.of(2021, 11, 1), 8, 293023.2);
 		movie2 = new Movie("Windfall2", LocalDate.of(2021, 03, 11), 4, 8938293.2);

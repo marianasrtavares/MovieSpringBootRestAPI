@@ -6,7 +6,6 @@ public class Validator {
 	
 	public static void validate(Movie movie) {
 		
-		if(movie.getId()==null) throw new IllegalArgumentException("Movie id cannot be null");
 		if(movie.getTitle()==null) throw new IllegalArgumentException("Movie title cannot be null");
 		if(movie.getLaunchDate()==null) throw new IllegalArgumentException("Movie launchdate cannot be null");
 		if(movie.getRate()==null) throw new IllegalArgumentException("Movie rate cannot be null");

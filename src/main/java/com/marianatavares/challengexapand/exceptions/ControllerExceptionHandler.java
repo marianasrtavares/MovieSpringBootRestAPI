@@ -17,7 +17,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse("The request was not found", ex.getMessage(),
 				HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getHttpStatus());
+		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getStatus());
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
@@ -25,7 +25,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse("Illegal argument", ex.getMessage(),
 				HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getHttpStatus());
+		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getStatus());
 	}
 
 	@ExceptionHandler(Exception.class)
@@ -34,7 +34,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		ExceptionResponse exceptionResponse = new ExceptionResponse("Error", ex.getMessage(),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getHttpStatus());
+		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getStatus());
 	}
 
 }

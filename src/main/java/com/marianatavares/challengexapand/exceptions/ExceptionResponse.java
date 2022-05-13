@@ -6,12 +6,12 @@ public class ExceptionResponse {
 	
 	private String message;
 	private String details;
-	private HttpStatus httpStatus;
+	private HttpStatus status;
 	
-	public ExceptionResponse(String message, String details, HttpStatus httpStatus) {
+	public ExceptionResponse(String message, String details, HttpStatus status) {
 		this.message = message;
 		this.details = details;
-		this.httpStatus = httpStatus;
+		this.status = status;
 	}
 
 	public String getMessage() {
@@ -22,8 +22,8 @@ public class ExceptionResponse {
 		return details;
 	}
 
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
+	public HttpStatus getStatus() {
+		return status;
 	}
 	
 	

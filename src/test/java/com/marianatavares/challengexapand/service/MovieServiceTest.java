@@ -2,6 +2,7 @@ package com.marianatavares.challengexapand.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,13 +11,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,20 +28,24 @@ import com.marianatavares.challengexapand.repository.MovieRepository;
 public class MovieServiceTest {
 	
 	
-	@Mock
+	
 	private MovieRepository repo;
+	private MovieService service;
+
 	
 	@Autowired
 	@InjectMocks 
-	private MovieService service;
 	private Movie movie1;
 	private Movie movie2;
 	List<Movie> movieList;
 	
 	@BeforeEach
 	public void setUp() {
+		repo= mock(MovieRepository.class);
+		service=new MovieServiceImpl(repo);
 		movieList= new ArrayList<>();
 		movie1= new Movie("Joker2", LocalDate.of(2021, 11, 1), 8,293023.2);
+		movie1.setId(1l);
 		movie2=new Movie("Windfall2", LocalDate.of(2021, 03, 11), 4, 8938293.2);
 		movieList.addAll(Arrays.asList(movie1,movie2));
 
@@ -75,8 +80,11 @@ public class MovieServiceTest {
 	
 	@Test
 	public void whenGivenMovieShouldUpdateMovieFound() {
-		movie1.setTitle("Joker3");
-	    service.updateMovie(movie1, movie1.getId());
+		Optional<Movie> optional= Optional.of(movie1);
+		when(repo.findById(movie1.getId())).thenReturn(optional);
+		Movie newMovie= new Movie();
+		newMovie.setTitle("Joker3");
+	    service.updateMovie(newMovie, movie1.getId());
 	    verify(repo).save(movie1);
 	}
 	
