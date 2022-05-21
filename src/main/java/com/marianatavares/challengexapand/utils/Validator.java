@@ -1,10 +1,10 @@
 package com.marianatavares.challengexapand.utils;
 
-import com.marianatavares.challengexapand.domain.Movie;
+import com.marianatavares.challengexapand.dto.MovieDTO;
 
 public class Validator {
 
-	public static void validate(Movie movie) {
+	public static void validate(MovieDTO movie) {
 
 		if (movie.getTitle() == null)
 			throw new IllegalArgumentException("Movie title cannot be null");

@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.marianatavares.challengexapand.domain.Movie;
+import com.marianatavares.challengexapand.dto.MovieDTO;
 import com.marianatavares.challengexapand.repository.MovieRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,7 +75,8 @@ public class MovieServiceTest {
 	@Test
 	public void whenGivenMovieToAddShouldSaveTheMovie() {
 		when(repo.save(movie1)).thenReturn(movie1);
-		service.insertMovie(movie1);
+		MovieDTO movieDto= new MovieDTO(movie1);
+		service.insertMovie(movieDto);
 		verify(repo, times(1)).save(movie1);
 	}
 	
@@ -84,7 +86,8 @@ public class MovieServiceTest {
 		when(repo.findById(movie1.getId())).thenReturn(optional);
 		Movie newMovie= new Movie();
 		newMovie.setTitle("Joker3");
-	    service.updateMovie(newMovie, movie1.getId());
+		MovieDTO movieDto= new MovieDTO(newMovie);
+	    service.updateMovie(movieDto, movie1.getId());
 	    verify(repo).save(movie1);
 	}
 	

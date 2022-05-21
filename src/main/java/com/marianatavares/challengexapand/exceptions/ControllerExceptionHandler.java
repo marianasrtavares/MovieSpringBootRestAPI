@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
+public class ControllerExceptionHandler {
 
 	@ExceptionHandler(NoSuchElementException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -21,10 +20,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse("Illegal argument", ex.getMessage(),
-				HttpStatus.NOT_FOUND);
+				HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(exceptionResponse, exceptionResponse.getStatus());
 	}
 
